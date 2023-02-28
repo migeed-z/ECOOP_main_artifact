@@ -256,11 +256,16 @@ class TestResNet(unittest.TestCase):
         print(timedelta(seconds=end-start))
         print('We proved that the input is rank-4')
 
-        # then add arithmetic constraints. We annotate all but one input.
-        solver.add(input == tensor_type.tensor4(D(1, s1), D(1, 3), D(1, 224), D(1, 224)))
-        solver.add(s1 > 4)
-        print('We added an arithmetic constraints on the first dimension and fix the other three dimensions')
+        # then add arithmetic constraints.
+        solver.add(input == tensor_type.tensor4(D(1, s1), D(1, s2), D(1, s3), D(1, s4)))
+        solver.add(s1 > 3)
+        solver.add(s1 < 100)
+        solver.add(s2 == 3)
+        solver.add(s3 == s4)
+        solver.add(s3 < 300)
+        solver.add(s3 > 200)
 
+        print('We added an arithmetic constraints on the first dimension and fix the other three dimensions')
 
         assert solver.check() == z3.sat
         print('our constraints are satisfiable with the following input annotation: ')
@@ -270,6 +275,7 @@ class TestResNet(unittest.TestCase):
         end = timer()
         print('This is overall time it took to compute the result after adding arithmetic constraints:')
         print(timedelta(seconds=end-start))
+
 
 if __name__ == '__main__':
     unittest.main()
