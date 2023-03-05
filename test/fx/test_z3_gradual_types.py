@@ -209,7 +209,6 @@ class TestAlexNet(unittest.TestCase):
         print('This is the overall time it took to compute the results so far:')
         print(timedelta(seconds=end-start))
 
-        print('We added an arithmetic constraint:')
         solver.add(v1 > 5)
         assert solver.check() == z3.sat
         print('We added an arithmetic constraint:')
